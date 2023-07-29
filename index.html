@@ -11,14 +11,29 @@
     <script src="main.js" defer></script>
   </head>
   <body>
-    <header>
+    <!-- <header>
       <h1>Vue Sandbox</h1>
-    </header>
+    </header> -->
     <section id="my-goal">
       <h2>Abdul Alim's Goal</h2>
+
+      <!-- v-on directive to add any event listener -->
+      <button v-on:click="goal++">Add</button>
+      <!-- logic in html is bad practice -->
+      <button v-on:click="reduceGoal(1)">Reduce</button> <!--or, just 'reduceGoal' if no argument-->
+      <h2>Total Goals: {{ goal }}</h2>
       
       <!-- Interpolation: {{ Reference key from Vue Data Object}} -->
+      <!-- This curly braces data binding technique only available inside the tag -->
       <p>{{ courseGoal }}</p>
+      <!-- <p v-html="courseGoalB"></p> -->
+      <p>{{ Math.random() + 3 }}</p> <!--single line expression of javascript, not custom functions-->
+      <h2>{{ courseGoalMethod() }}</h2>
+      <!-- Using vue directive for attribute -->
+      <p>Learn More
+        <a v-bind:href="courseLink">Course</a>
+      </p>
     </section>
   </body>
 </html>
+
