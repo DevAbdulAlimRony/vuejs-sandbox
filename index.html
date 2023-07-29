@@ -11,13 +11,14 @@
     <script src="main.js" defer></script>
   </head>
   <body>
-    <!-- <header>
-      <h1>Vue Sandbox</h1>
-    </header> -->
     <section id="my-goal">
-      <h2>Abdul Alim's Goal</h2>
+      <h2>Goal of {{ yourName }}</h2>
 
+      <!-- Initial Value Locked -->
+      <h4 v-once>Starting Goal: {{ goal }}</h4>
       <!-- v-on directive to add any event listener -->
+      <input type="text" placeholder="Enter Last Name" v-on:input="setName('Abdul', $event)">
+
       <button v-on:click="goal++">Add</button>
       <!-- logic in html is bad practice -->
       <button v-on:click="reduceGoal(1)">Reduce</button> <!--or, just 'reduceGoal' if no argument-->
@@ -33,6 +34,13 @@
       <p>Learn More
         <a v-bind:href="courseLink">Course</a>
       </p>
+
+      <!-- Browser Default Behavior: Page will refresh
+      prevent is a event modifier that remove it (keyboard event modifier ex- keyup.enter) -->
+      <form v-on:submit.prevent = "submitForm()">
+        <input type="text" placeholder="If we submit form">
+        <button>submit</button>
+      </form>
     </section>
   </body>
 </html>

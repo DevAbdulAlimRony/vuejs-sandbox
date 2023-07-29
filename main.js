@@ -5,6 +5,7 @@ const app = Vue.createApp({
     // data: function() {} or, data(){} - data always take function that returns as key-value pair
     data(){
         return{
+            yourName: "Abdul Alim",
             courseGoal: "Finish VueJs Quickly",
             courseGoalB: "<h2>Use of v-html directive</h2>",
             courseLink: "https://www.udemy.com/course/vuejs-2-the-complete-guide/",
@@ -24,9 +25,15 @@ const app = Vue.createApp({
                     return "Walk Slowly through this course";
                 }
             },
+            setName(firstName, event){
+                this.yourName = firstName + ' ' + event.target.value;
+            },
             reduceGoal(num){
                 this.goal = this.goal - num;
             },
+            submitForm(){
+                alert("Form Action taken without page refresh");
+            }
     }
 });
 //mount() connects vue with html
