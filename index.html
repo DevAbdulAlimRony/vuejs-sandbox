@@ -8,39 +8,57 @@
     <link rel="stylesheet" href="style.css" />
 
     <script src="https://unpkg.com/vue@next" defer></script>
-    <script src="main.js" defer></script>
+    <script src="01-App.js" defer></script>
   </head>
   <body>
-    <section id="my-goal">
-      <h2>Goal of {{ yourName }}</h2>
 
-      <!-- Initial Value Locked -->
+  <!-- Code for 01-App.js -->
+    <section id="app">
+   <!--
+      |-> Interpolation: {{ Reference key from Vue Data Object}}
+      |-> This curly braces data binding technique only available inside the bound html element 
+    -->
+      <h2>VueJs: Goal of {{ yourName }}</h2>
+
+    <!-- Using Computed/Computational Property -->
+      <h2>{{ courseGoalMethod }}</h2>
+
+      <!-- Initial Value Locked, No change will occur -->
       <h4 v-once>Starting Goal: {{ goal }}</h4>
-      <!-- v-on directive to add any event listener -->
-      <input type="text" placeholder="Enter Last Name" v-on:input="setName('Abdul', $event)">
 
-      <button v-on:click="goal++">Add</button>
-      <!-- logic in html is bad practice -->
-      <button v-on:click="reduceGoal(1)">Reduce</button> <!--or, just 'reduceGoal' if no argument-->
+    <!-- 
+       |-> v-on directive to add any event listener
+       |-> v-bind directive to add any attributes value
+       |-> v-html directive to add any html element 
+       |-> v-model directive is combination of v-on:input and v-bind:value
+    -->
+      <input type="text" placeholder="Your Name" v-on:input="setName($event)" v-bind:value="yourName">
+      <input type="text" placeholder="set and reset shortcut" v-model="yourName">
+      <button v-on:click="resetInput">Reset</button>
+      <br><br>
+
+    <!-- v-on: shorthand- @ -->
+      <button @click="goal++">Add</button>
+
+    <!-- logic in html is bad practice -->
+      <button @click="reduceGoal(1)">Reduce</button> <!--or, just 'reduceGoal' if no argument-->
       <h2>Total Goals: {{ goal }}</h2>
-      
-      <!-- Interpolation: {{ Reference key from Vue Data Object}} -->
-      <!-- This curly braces data binding technique only available inside the tag -->
-      <p>{{ courseGoal }}</p>
-      <!-- <p v-html="courseGoalB"></p> -->
-      <p>{{ Math.random() + 3 }}</p> <!--single line expression of javascript, not custom functions-->
-      <h2>{{ courseGoalMethod() }}</h2>
-      <!-- Using vue directive for attribute -->
-      <p>Learn More
-        <a v-bind:href="courseLink">Course</a>
-      </p>
 
-      <!-- Browser Default Behavior: Page will refresh
-      prevent is a event modifier that remove it (keyboard event modifier ex- keyup.enter) -->
+    <!-- v-bind: shorthand- : -->
+      <p>Learn More
+        <a :href="courseLink">Course</a>
+      </p>
+     
+    <!-- 
+      |-> Browser Default Behavior for Form: Page will refresh
+      |-> prevent is a event modifier that remove it
+      |-> keyboard event modifier ex- keyup.enter
+    -->
       <form v-on:submit.prevent = "submitForm()">
         <input type="text" placeholder="If we submit form">
         <button>submit</button>
       </form>
+      
     </section>
   </body>
 </html>
