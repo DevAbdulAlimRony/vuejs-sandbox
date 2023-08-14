@@ -23,7 +23,7 @@
     max-width: 40rem;
   }
   
-  #app {
+  #app, #conditional {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
     margin: 3rem auto;
     border-radius: 10px;
@@ -33,14 +33,14 @@
     max-width: 40rem;
   }
   
-  #app h2 {
+ h2 {
     font-size: 2rem;
     border-bottom: 4px solid #ccc;
     color: #4fc08d;
     margin: 0 0 1rem 0;
   }
   
-  #app p {
+   p {
     font-size: 1.25rem;
     font-weight: bold;
     border: 1px solid #4fc08d;
@@ -50,18 +50,18 @@
     border-radius: 25px;
   }
   
-  #app input {
+   input {
     font: inherit;
     border: 1px solid #ccc;
   }
   
-  #app input:focus {
+  input:focus {
     outline: none;
     border-color: #1b995e;
     background-color: #d7fdeb;
   }
   
-  #app button {
+   button {
     font: inherit;
     cursor: pointer;
     border: 1px solid #ff0077;
@@ -71,10 +71,37 @@
     box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.26);
   }
   
-  #app button:hover,
-  #app button:active {
+   button:hover,
+  button:active {
     background-color: #ec3169;
     border-color: #ec3169;
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.26);
   }
+  #styling {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+    margin: 3rem;
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+  }
   
+  .demo {
+    width: calc(100% - 32px);
+    height: 100px;
+    margin: 16px;
+    border: 2px dashed #ccc;
+  }
+  .active{
+    border-color: red;
+    background-color: cyan;
+  }
+ li {
+    margin: 1rem 0;
+    font-size: 1.25rem;
+    font-weight: bold;
+    padding: 0.5rem;
+    color: #1f1f1f;
+    list-style: none;
+    cursor: pointer;
+    background-color: cyan;
+  }

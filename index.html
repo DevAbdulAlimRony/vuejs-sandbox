@@ -8,7 +8,10 @@
     <link rel="stylesheet" href="style.css" />
 
     <script src="https://unpkg.com/vue@next" defer></script>
+
     <script src="01-App.js" defer></script>
+    <script src="02-Style.js" defer></script>
+    <script src="03-Conditional.js" defer></script>
   </head>
   <body>
 
@@ -16,7 +19,7 @@
     <section id="app">
    <!--
       |-> Interpolation: {{ Reference key from Vue Data Object}}
-      |-> This curly braces data binding technique only available inside the bound html element 
+      |-> This curly braces data binding technique only available inside the bounded html element 
     -->
       <h2>VueJs: Goal of {{ yourName }}</h2>
 
@@ -59,6 +62,66 @@
         <button>submit</button>
       </form>
       
+    </section>
+
+    <!-- Code for 02-Style.js -->
+    <section id="styling">
+      <header>
+        Vuejs Styling
+      </header>
+      <!-- {borderColor} or {"border-color"} -->
+      <!-- Inline Style- Bad Practice -->
+      <div class="demo" @click="boxSelected('A')" :style="{borderColor: boxASelected ? 'red' : '#ccc'}"></div>
+
+      <!-- Working with External CSS -->
+      <!-- Dynamically select active class if BoxBSelected is true -->
+      <div :class="{demo: true, active: boxBSelected}" @click="boxSelected('B')"></div>
+
+      <!-- Separate Static class and dynamic vuejs class is best practice -->
+      <!-- Class Logic from Vuejs computed -->
+      <div class="demo"
+       :class="boxCClasses" 
+       @click="boxSelected('C')"></div>
+
+       <!-- Dynamic Array -->
+       <div :class="['demo', {active: boxDSelected}]" @click="boxSelected('D')"></div>
+    </section>
+
+    
+    <section id="conditional">
+      <h2>My Conditional course goals</h2>
+      <input type="text" v-model="goalEntered" />
+      <button @click="addGoal">Add Goal</button>
+
+      <!-- Using v-if like if(true) -->
+      <p v-if="goals.length === 0">No goals have been added yet - please start adding some!</p>
+
+      <!-- v-else or v-else-if: applied tag must be direct neighbor of previous tag -->
+
+      <!--
+      |-> v-show: alternative of v-if, but no else or else if available
+      |-> v-if remove element from dom, v-show just use display:none 
+       -->
+       
+      <ul v-else>
+        <!-- Using for loop -->
+        <!-- <li v-for="goal in goals">{{ goal }}</li> -->
+        
+        <li v-for="(goal, index) in goals" @click="removeGoal(index)" :key="goal">{{ index }} - {{ goal }}</li>
+
+        <!-- or, idx instead of index -->
+        <!-- key is not default html property,identified by vue. use it when unique identifier like id -->
+      </ul>
+
+      <!-- Loop through Objects -->
+      <div>
+        <span v-for="(value, key, index) in {name: 'Abdul', age: 24}">{{ index }} - {{ key }} : {{ value }}</span>
+      </div>
+
+      <!-- Loop through Numbers -->
+      <div>
+        <span v-for="num in 5">{{ num }}</span>
+      </div>
     </section>
   </body>
 </html>

@@ -5,7 +5,7 @@
 const app = Vue.createApp({
     
 /*
-  \-> data is a property that can be used in html that part is connected here
+  \-> data is a property that can be used in html which part is connected here
   /-> data: function() {} or, data(){} - data always take function that returns as key-value pair
 */
     data(){
