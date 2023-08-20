@@ -12,6 +12,7 @@
     <script src="01-App.js" defer></script>
     <script src="02-Style.js" defer></script>
     <script src="03-Conditional.js" defer></script>
+    <script src="05-Component.js" defer></script>
   </head>
   <body>
 
@@ -87,7 +88,7 @@
        <div :class="['demo', {active: boxDSelected}]" @click="boxSelected('D')"></div>
     </section>
 
-    
+    <!-- Code for 02-Conditional.js -->
     <section id="conditional">
       <h2>My Conditional course goals</h2>
       <input type="text" v-model="goalEntered" />
@@ -122,6 +123,18 @@
       <div>
         <span v-for="num in 5">{{ num }}</span>
       </div>
+    </section>
+
+    <!-- Code for 05-Component.js -->
+    <header>
+      <h1>FriendList</h1>
+    </header>
+    <friend-contact></friend-contact>
+    <section id="component">
+      <ul>
+        <friend-contact></friend-contact>
+        <friend-contact></friend-contact>
+      </ul>
     </section>
   </body>
 </html>
