@@ -57,4 +57,3 @@ const app5 = Vue.createApp({
   });
   
   app5.mount('#component');
-  
