@@ -19,7 +19,7 @@ Slot:
 
 Dynamic Component
     - which component to show?
-    - <componet :is="method"></componet>
+    - <component :is="method"></component>
     - keep alive component allows you to not remove the component entirely, but cached
 
 - <teleport to="body"></teleport> : Render it in the body element. Useful when we make modal with dialog.

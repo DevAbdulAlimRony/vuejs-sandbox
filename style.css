@@ -144,4 +144,74 @@
     border-color: #ec3169;
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.26);
   }
+
+  .form-input{
+    margin: 2rem auto;
+    max-width: 40rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+    padding: 2rem;
+    background-color: #ffffff;
+  }
+  
+  .form-input .form-control {
+    margin: 0.5rem 0;
+  }
+
+  .form-input .form-control.invalid input {
+    border-color: red;
+  }
+
+  .form-input .form-control.invalid label {
+    color: red;
+  }
+  
+  .form-input label {
+    font-weight: bold;
+  }
+  
+  .form-input h2 {
+    font-size: 1rem;
+    margin: 0.5rem 0;
+  }
+  
+  .form-input input,
+  .form-input select {
+    display: block;
+    width: 100%;
+    font: inherit;
+    margin-top: 0.5rem;
+  }
+  
+  .form-input select {
+    width: auto;
+  }
+  
+  .form-input input[type='checkbox'],
+  .form-input input[type='radio'] {
+    display: inline-block;
+    width: auto;
+    margin-right: 1rem;
+  }
+  
+  .form-input input[type='checkbox'] + label,
+  .form-input input[type='radio'] + label {
+    font-weight: normal;
+  }
+  
+  .form-input button {
+    font: inherit;
+    border: 1px solid #0076bb;
+    background-color: #0076bb;
+    color: white;
+    cursor: pointer;
+    padding: 0.75rem 2rem;
+    border-radius: 30px;
+  }
+  
+  .form-input button:hover,
+  .form-input button:active {
+    border-color: #002350;
+    background-color: #002350;
+  }
   
