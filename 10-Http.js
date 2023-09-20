@@ -1,1 +1,1 @@
-//observe the simple project with firebase.
+//observe the simple vuejs project with firebase in github.
