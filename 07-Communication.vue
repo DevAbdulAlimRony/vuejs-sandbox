@@ -25,3 +25,16 @@
 //Provide and Inject: Provide data in one place and inject it in another place.
 //Provide and Injects need parent child relation, we can't do it between neighbors
 //If data needs to pass through multiple components, then use it.
+
+//Event Modifiers: .stop, .prevent, .self, .once, .passive, .capture
+//Key modifier: .enter, .page-down, .tab, .delete, .esc, .space, .up, .down, .left, .right
+//System Modifier Keys: .ctrl, .alt, .shift, .meta
+<!-- this will only fire when Ctrl and no other keys are pressed -->
+<button @click.ctrl.exact="onCtrlClick">A</button>
+
+<!-- this will only fire when no system modifiers are pressed -->
+<button @click.exact="onClick">A</button>
+
+<!-- Mouse Button Modifier: .left, .right, .middle -->
+
+<!-- v-model modifiers: .number, .trim, .lazy -->

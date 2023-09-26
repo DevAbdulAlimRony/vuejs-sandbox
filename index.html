@@ -29,13 +29,18 @@
       <h2>{{ courseGoalMethod }}</h2>
 
       <!-- Initial Value Locked, No change will occur -->
+      <!-- Directives are prefixed with v-. Ex. v-html -->
       <h4 v-once>Starting Goal: {{ goal }}</h4>
 
     <!-- 
        |-> v-on directive to add any event listener
-       |-> v-bind directive to add any attributes value
+       |-> v-bind directive to add any attributes value. f the bound value is null or undefined, then the attribute will be removed from the rendered element.
        |-> v-html directive to add any html element 
        |-> v-model directive is combination of v-on:input and v-bind:value
+       |-><div :id="`list-${id}`"></div>
+       |-> {{ if (ok) { return message } }} won't work. because each binding just take one expression(exception of v-for, v-on and v-slot)
+       |->  {{ formatDate(date) }}, just can use global methods like Math, Date
+       |->  Can add global properties to use: app.config.globalProperties
     -->
       <input type="text" placeholder="Your Name" v-on:input="setName($event)" v-bind:value="yourName">
       <input type="text" placeholder="set and reset shortcut" v-model="yourName">
@@ -53,6 +58,8 @@
       <p>Learn More
         <a :href="courseLink">Course</a>
       </p>
+
+    <!-- Dynamic attribute: <a :[attributeName]="url"> ... </a>..Here attributeName is expression -->
      
     <!-- 
       |-> Browser Default Behavior for Form: Page will refresh
@@ -73,11 +80,12 @@
       </header>
       <!-- {borderColor} or {"border-color"} -->
       <!-- Inline Style- Bad Practice -->
+      <!-- <div :class="{ active: isActive }"></div> active class will be taken if isActive method is truthy -->
       <div class="demo" @click="boxSelected('A')" :style="{borderColor: boxASelected ? 'red' : '#ccc'}"></div>
 
       <!-- Working with External CSS -->
       <!-- Dynamically select active class if BoxBSelected is true -->
-      <div :class="{demo: true, active: boxBSelected}" @click="boxSelected('B')"></div>
+      <div class="others" :class="{demo: true, active: boxBSelected}" @click="boxSelected('B')"></div>
 
       <!-- Separate Static class and dynamic vuejs class is best practice -->
       <!-- Class Logic from Vuejs computed -->
@@ -85,8 +93,15 @@
        :class="boxCClasses" 
        @click="boxSelected('C')"></div>
 
-       <!-- Dynamic Array -->
+       <!-- Binding as Dynamic Array -->
        <div :class="['demo', {active: boxDSelected}]" @click="boxSelected('D')"></div>
+
+       <!-- If your component has multiple root elements, you would need to define which element will receive this class. -->
+       <p :class="$attrs.class"></p>
+
+       <!-- <div :style="{ color: activeColor, fontSize: fontSize + 'px' }"></div> //or font-size: fontSize -->
+       <!-- When you use a CSS property that requires a vendor prefix in :style, Vue will automatically add the appropriate prefix. -->
+       <!-- <div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }"></div> -->
     </section>
 
     <!-- Code for 02-Conditional.js -->
@@ -124,6 +139,24 @@
       <div>
         <span v-for="num in 5">{{ num }}</span>
       </div>
+
+      <!-- we can have nested v-for: li v-for="item in items">
+      <span v-for="childItem in item.children">
+        {{ item.message }} {{ childItem }}
+      </span>
+      </li> -->
+
+      <!-- Can use of: <div v-for="item of items"></div> -->
+
+      <!-- We can use v-if and v-for in template and component also -->
+
+      <!-- if v-for and v-if in combined use, v-if got priority -->
+
+      <!-- We can maintain state with :key for primary key. It is recommended to provide a key attribute with v-for whenever possible, unless the iterated DOM content is simple. It expects primitive values like number, string.
+       -->
+
+      <!-- Mutation Methods: push(), pop(), shift(), unshift(), splice(), sort(), reverse() -->
+      <!-- Non Mutating Methods: filter(), concat(), slice(). return a new array instead of array manipulation. -->
     </section>
 
     <!-- Code for 05-Component.js -->

@@ -13,3 +13,11 @@
     //If data changes, that trigger a new life cycle- 'beforeUpdate()' and 'updated()'
 
     //unMounted: All the content of the app is removed from the screen and the app is dead. and we got two phases= 'beforeUnmount()' and 'unMounted()' 
+
+    //See the diagram from documentation
+
+//Template refs: ref is a special attribute. It allows us to obtain a direct reference to a specific DOM element or child component instance after it's mounted.
+
+//ou might use the ref property when you need to interact with a specific child component or DOM element, such as focusing an input field, triggering methods on a child component, or accessing the underlying DOM for custom operations.
+
+//'Extra Topics' from documentation

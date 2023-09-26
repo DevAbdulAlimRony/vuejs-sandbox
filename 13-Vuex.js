@@ -1,5 +1,7 @@
 //Better State Management. State is simply an object that contains the properties that need to be shared within the application. Replacing provide and inject
 
+//State can be managed by reactive api mainly.
+
 //State is simply reactive data that affects what user sees on the screen. There are local state(affects single component) and global state(affects multiple component or entire app). Vuex is a library for managing global state. It needs for fat components, unpredictable data and accidental or missed state updates. Using vuex, we get outsourced, predictable and less errors state management.
 
 //Install: npm install --save vuex

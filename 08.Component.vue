@@ -21,7 +21,13 @@ Dynamic Component
     - which component to show?
     - <component :is="method"></component>
     - keep alive component allows you to not remove the component entirely, but cached
+    - keep alive props: :include, :exclude, :max
+    - Keep alive lifecycle hook: onActivated(), onDeactivated()
 
 - <teleport to="body"></teleport> : Render it in the body element. Useful when we make modal with dialog.
+- multiple teleport can be tragetted to same tag or class or id
+- Teleport can be disabled by :disAbled='functionName'
+
+- suspense for async(experimental)
 
 - $ref attribute

@@ -1,7 +1,17 @@
+//Vue is a JavaScript framework for building user interfaces.
+//Declarative Rendering: Vue extends standard HTML with a template syntax that allows us to declaratively describe HTML output based on JavaScript state.
+//Reactivity: Vue automatically tracks JavaScript state changes and efficiently updates the DOM when changes happen.
+//Single-File Component(SFC): A Vue SFC, as the name suggests, encapsulates the component's logic (JavaScript), template (HTML), and styles (CSS) in a single file.
+
 /*
  \-> If we want to control any part of HTML, we need to create a vue app
  /-> Vue is a Global Object, createApp() always take a function as argument
 */
+
+import { createApp } from 'vue';
+// import App from './App.vue'
+// const app = createApp(App)
+
 const app = Vue.createApp({
     
 /*
@@ -62,6 +72,8 @@ const app = Vue.createApp({
   /-> goal(value) = goal is from data (must be same name) and value(old value) means this.goal
   /-> Use Case: Send http request when certain data changes
 */
+
+//"side effects" in reaction to state changes - for example, mutating the DOM, or changing another piece of state based on the result of an async operation.
     watch: {
         goal(value){
             if(value < 0){
@@ -72,4 +84,15 @@ const app = Vue.createApp({
 });
 
 //mount() connects vue with a part of html
+//An application instance won't render anything until its .mount() method is called. It expects a "container" argument, which can either be an actual DOM element or a selector string
 app.mount('#app');
+
+app.component();
+
+app.config.errorHandler = (err) => {
+    /* handle error */
+  }
+
+app.use();
+
+//app can be multiple for different parts of the html
