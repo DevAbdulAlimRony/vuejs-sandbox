@@ -34,7 +34,7 @@ const router = createRouter({
          //For Single component guard
          { name: 'teams', path: '/teams', component: componentName, beforeEnter: {to, from, next} },
 
-         //Guard in Component as Method: beforeRouteEnter(){}, beforeRouteUpdate(){}4
+         //Guard in Component as Method: beforeRouteEnter(){}, beforeRouteUpdate(){}
 
          //Route metadata: Pass Anything to use it like if(to.meta.needAuth)
          { name: 'teams', path: '/teams', component: componentName,  meta: {

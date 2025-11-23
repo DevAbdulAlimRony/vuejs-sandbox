@@ -48,7 +48,7 @@ const app = Vue.createApp({
     }, 
     
 /*
-  \-> Preventing re-exucation for all methods, just execute method which is called
+  \-> Preventing re-execution for all methods, just execute method which is called
   /-> don't call courseGoalMethod() in html, just write courseGoalMethod to point the method
   \-> don't bind events in computed property, Bind in Method 
   /-> this keyword in vue take all from data object and merge it with createApp() instance
@@ -91,7 +91,7 @@ app.component();
 
 app.config.errorHandler = (err) => {
     /* handle error */
-  }
+}
 
 app.use();
 
