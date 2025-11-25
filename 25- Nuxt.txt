@@ -1,0 +1,124 @@
+0. Three modes you can use (per route)
+
+Think of Nuxt as having three “page styles”:
+
+SSG (Static) – page is pre-built at deploy time
+
+SSR – page is built on the server on each request
+
+SPA (Client-only) – page is rendered only in the browser with JS
+
+You can mix these in one Nuxt app → this is the hybrid idea.
+
+1. Simple rule to remember
+
+Ask two questions for each page:
+
+Is this page public and needs SEO / sharing?
+
+Does the data change very often or is it mostly stable?
+
+Then:
+
+Public + doesn’t change often → SSG
+
+Public + changes often / per user → SSR
+
+Private (after login) → SPA
+
+That’s the whole game. Now let’s do a “perfect” real-life example.
+
+2. Real-life site example: cpb-agri.com
+
+Imagine you build a Nuxt site:
+
+Public website for CPB
+
+Private CRM dashboards for staff
+
+🔹 Public routes (for everyone)
+/ (Home), /about, /contact, /products
+
+Content from CMS or DB, but not changing every minute
+
+Needs SEO + fast loading
+
+Good candidate for SSG
+
+👉 Use SSG
+Nuxt will pre-generate the HTML at build time.
+Deploy to Netlify/Vercel/CDN → very fast.
+
+/blog, /blog/:slug
+
+Also public, SEO important.
+
+Articles don’t change every 5 seconds.
+
+👉 Use SSG again
+Rebuild when new posts are added.
+
+/pricing
+
+Public page
+
+But prices can change frequently (daily/weekly)
+
+Maybe you want always-fresh data from DB
+
+👉 Use SSR
+Server renders HTML on every request using latest prices.
+
+🔹 Private routes (only logged-in staff)
+/login
+
+Public, but SEO not important
+
+Just a simple form
+
+👉 Can be SSG or SSR (doesn’t really matter).
+Most people are fine with SSG (static login page).
+
+/dashboard
+
+Only for logged-in staff
+
+Shows sales, charts, metrics
+
+Data is user-specific and real-time-ish
+
+👉 Use SPA (client-only)
+No SEO needed, just load JS and fetch data via API.
+
+/crm/farmers, /crm/flocks, /crm/reports
+
+All behind login
+
+Dynamic filters, tables, pagination
+
+Depends on user, date filters, etc.
+
+👉 Use SPA (client-only)
+Pure app experience, no need for SSR/SSG.
+
+3. Put it in one small table
+Route	Who uses it?	SEO needed?	Data type	Mode to use
+/ (Home)	Public	✅ Yes	Mostly static	SSG
+/about, /contact	Public	✅ Yes	Static	SSG
+/products, /products/:slug	Public	✅ Yes	Mostly static	SSG
+/blog, /blog/:slug	Public	✅ Yes	Static-ish	SSG
+/pricing	Public	✅ Yes	Changes often	SSR
+/login	Public	❌ No	Simple form	SSG/SSR (either)
+/dashboard	Private	❌ No	Per-user, dynamic	SPA
+/crm/*	Private	❌ No	Highly dynamic app	SPA
+
+A login page does NOT need SEO.
+And in almost every project, it is actually bad if search engines index your login page.
+// <meta name="robots" content="noindex, nofollow"> : Add this in login page then.
+
+If Laravel Blade already renders your HTML + meta tags + SEO content, and Vue is only used as an SPA inside that Blade page →
+you do NOT need Nuxt at all.
+Laravel + Blade + Vue is already enough.
+
+For public website / SEO / marketing → Nuxt usually wins
+For internal tools / admin / CRM / simple hosting → Blade usually wins
