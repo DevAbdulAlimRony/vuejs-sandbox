@@ -1,0 +1,53 @@
+** Many of Vue's APIs are "tree-shakable" if bundled via a modern build tool.
+** If you don't use the built-in <Transition> component, it won't be included in the final production bundle. Tree-shaking can also remove other unused modules in your source code.
+** When using a build step, templates are pre-compiled so we don't need to ship the Vue compiler to the browser. This saves 14kb min+gzipped JavaScript and avoids the runtime compilation cost.
+** How fast the application shows content and becomes interactive on the initial visit. This is usually measured using web vital metrics like Largest Contentful Paint (LCP) and Interaction to Next Paint.
+
+** Performance:
+✅ a) Use route-level code splitting (per-page chunks)- Lazy Loading
+✅ b) Split very heavy components (Lazy Load component by defineAsyncComponent)
+✅ c) Watch out for heavy deps (moment, lodash, big UI libs, etc.)
+✅ d) Let Vite/webpack tree-shake (Don’t import the whole thing when only a piece is needed)
+✅ e) Cache JS/CSS aggressively but keep HTML no-cache
+✅ f) Use Chrome DevTools Coverage per page
+     For per-page usage:
+        Open Chrome → DevTools → Sources → Coverage
+        Click “Start instrumenting coverage”
+        Reload page.
+        If you see: vendor.js 2 MB, only 30% used on Home page
+                ⇒ great candidate for more splitting or removing unused libs.
+✅ g) Try to use composition api and pinia 
+✅ h) If your use case is sensitive to page load performance, avoid shipping it as a pure client-side SPA. Pure client-side rendering suffers from slow time-to-content.
+✅ i) Can use SSR, SSG, SPA where needs.
+✅ j) Remove unwanted things, files and comments.
+✅ k) If using a build step, prefer dependencies that offer ES module formats and are tree-shaking friendly. For example, prefer lodash-es over lodash.
+✅ l) Load API Data only when needs.
+✅ j) v-once is a built-in directive that can be used to render content that relies on runtime data but never needs to update.
+✅ K) v-memo is a built-in directive that can be used to conditionally skip the update of large sub-trees or v-for lists.
+✅ l) We can send human non-readable binary responses from backend rather than JSO because its bigger in size like facebook in large application. (in backend enable gzip for response, can use messagepack or other to make binary json, can use protobuf)
+✅ m) Don't make every child re-render for a long list. Ex. rather than use activeId prop to call in parent, use active true or false prop or use v-memo. See Update Optimizations from here: https://vuejs.org/guide/best-practices/performance.html 
+✅ n) If new object created from old in computed, manually comparing the new value with the old value, and conditionally returning the old value if we know nothing has changed
+✅ o) List Virtualization: The technique of only rendering the items that are currently in or close to the viewport in a large list. (Use libraries like vue-virtual-scroller or vue-virtual-scroll-grid or vueuc/VVirtualList)
+✅ p) Avoid unnecessary component abstraction like component which renders another component. Component which used just in small portions, rather than component, use directly.
+✅ q) Vue tracks every nested property when reactivity checking. shallowRef() / shallowReactive() only tracks root-level changes. Use shallowRef() or shallowReactive() when the nested object is large AND you only care about replacing it, not tracking its internal changes.
+✅ r) v-if adds or removes elements from the DOM, which is more performance-intensive rather than v-show.
+✅ s) When handling user input, such as search queries or form submissions, it's essential to debounce or throttle events to avoid performance issues.
+✅ t) Use parallel fetching using Promise.all() where needs like dashboard, more faster.
+✅ u) Client-Side Caching: Store previously-fetched data if frequently not changed so you don't fetch again unnecessarily like districts need all over the page- use pinia or vuex for global caching
+✅ v) Can use service worker for offline functionality, push notifications and background data synchronization.
+✅ w) Smart Prefetching: Load data before the user actually needs it to make the UI feel instant.
+✅ x) Lazy components need a loading/error UI and must be rendered only inside <Suspense> or with fallbacks; 
+✅ y) Always use the key attribute in loops to help Vue track changes efficiently.
+✅ z) Use computed properties instead of methods for derived values to avoid redundant calculations.
+✅ za) Don't Overuse of watch instead of computed properties.
+✅ zb) Make Bundle Size smaller and make fast initial load
+✅ zc) Overusing Vue’s v-if where v-show is more appropriate, because v-if will take time to render maybe. Prefer v-show over v-if when elements need to be toggled frequently.
+✅ zd) Cleanup event listeners and timers in onUnmounted to prevent memory leaks.
+✅ ze) Use onUpdated cautiously to avoid unnecessary updates.
+✅ zf) Overly complex or deeply nested components can slow down th rendering process, especially if they rely on extensive reactivity.
+✅ zg) Composables: Extract stateful logic into reusable composables to keep components clean and avoid code duplication
+✅ zh) Compress and optimize assets: Use modern image formats like WebP or AVIF, and compress images to reduce load times.
+✅ zi) Prefetching: Use tools like Vite's prefetching to load components ahead of time to prevent a "waterfall" effect.
+✅ zj) To improve performance, we need to first know how to measure it. Ex- PageSpeed Insights, Webpage Test, Vue Dev Tools Extension in Localhost
+✅ zi) app.config.performance enables Vue-specific performance markers in Chrome DevTools' performance timeline. It shows how much of each JS/CSS file is actually used on that page.
+✅ zj) You can track your Laravel+Vue bundle size (per chunk / per “page”) and get clear hints on what to optimize using visualizer also
