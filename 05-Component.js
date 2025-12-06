@@ -130,3 +130,41 @@ export default {
 //     }
 //   }
 // }
+
+
+// v-model: By default, v-model on a component uses a prop named modelValue and emits an event named update:modelValue.
+// <input :value = "searchText" @input="searchText = $event.target.value"/> Replace it by: <input v-model="searchText" />
+// It expends to this: <input :modelValue="searchText" @update:modelValue="newValue => searchText = newValue" />
+// For this to actually work though, the <CustomInput> component must do two things:
+// 1. Declare a prop named modelValue to receive the value.
+// 2. Emit an event named update:modelValue with the new value whenever it changes
+// If you want to use a different prop name, you can use the model option in the component definition to specify the prop and event names to use with v-model.
+// < script >
+// export default {
+//   props: ['modelValue'],
+//   emits: ['update:modelValue']
+// }
+// </script >
+// < input :value = "modelValue" @input="$emit('update:modelValue', $event.target.value)"/>
+// <CustomInput v-model="searchText" />
+// Another way is a getter and setter for value in computed hook.
+// But, what if our componet need multiple inputs, one v-model cant solve it. We can do it like this:
+// <CustomInput v-model:title="postTitle" v-model:content="postContent" />
+// In the component definition, we need to declare two props title and content, and emit two events update:title and update:content when the respective values change.
+// v-model has built in modifiers: .trim, .number, .lazy. We can also make custom modifier like .capitalize.
+// Modifiers added to a component v-model will be provided to the component via the modelModifiers prop to make custom modifier on it, we can deifne modelModifier and write the logic of that modifier in emitValue(e) method.
+// <MyComponent v-model:title.capitalize="myText">
+
+
+// Fallthrough Attributes: By default, any attributes that are not recognized as props or emits will be automatically added to the root element of the component.
+// Common examples of this include class, style, and id attributes.
+// When a component renders a single root element, fallthrough attributes will be automatically added to the root element's attributes.
+// MyButton Component with justone root level element: < button >Click Me</button > , Calling- <MyButton class="large" />
+// Here, <MyButton> did not declare class as an accepted prop. Therefore, class is treated as a fallthrough attribute and automatically added to <MyButton>'s root element.
+// If class or style or v-on listener already exists in child and parent, they will be merged.
+// Forwarded Attribute: If a component renders another component as its root node, Then the fallthrough attributes received by <MyButton> will be automatically forwarded to <BaseButton>.
+// If you do not want a component to automatically inherit attributes, you can set inheritAttrs: false in the component's options.
+// <span>  {{ $attrs }} </span> - $attrs object includes all attributes that are not declared by the component's props or emits options.
+// If we want to use fallthrough attribute in inner element- <div class="btn-wrapper"> <button class="btn" v-bind="$attrs">Click Me</button>
+// components with multiple root nodes do not have an automatic attribute fallthrough behavior.
+// We can access a components' fallthorugh in js like this- this.$attrs
