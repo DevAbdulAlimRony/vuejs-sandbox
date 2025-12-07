@@ -168,3 +168,47 @@ export default {
 // If we want to use fallthrough attribute in inner element- <div class="btn-wrapper"> <button class="btn" v-bind="$attrs">Click Me</button>
 // components with multiple root nodes do not have an automatic attribute fallthrough behavior.
 // We can access a components' fallthorugh in js like this- this.$attrs
+
+// Slot:
+// Besides prop, component can accept template content from parent using slots.
+// In parent component template: <BaseLayout> <h1> Hello World </h1> <p> This is my app </p> </BaseLayout>
+// In child component template: <div class="base-layout"> <slot></slot> </div>, slot element is a slot outlet where content should be place.
+// Slot content does not have access to the child component's data, only parent's data.
+// We can give fallback content to the slot- <slot> <p>This is default content</p> </slot>. If we dont provide content, it will show. if we provide content, default wont show.
+// Named Slot: <slot name="header"></slot>, A <slot> outlet without name implicitly has the name "default". Callling: <template v-slot:header>
+// v-slot has a dedicated shorthand #: <template #header>
+// When a component accepts both a default slot and named slots, all top-level non-<template> nodes are implicitly treated as content for the default slot.
+// Conditional Slot: Use $slots property Render if slot given- <div v-if="$slots.header" class="card-header"><slot name="header" /></div>
+// Dynamic Slot Name: <template v-slot:[dynamicSlotName]>, <template #[dynamicSlotName]>
+// Scoped Slot: A scoped slot is a special type of slot that allows a child component to pass data back to the parent component.
+// In child component: <slot :user="userData"></slot>, Here user is the prop name, userData is data in child component
+// In parent component: <ChildComponent> <template v-slot:default="slotProps"> <p>User Name: {{ slotProps.user.name }}</p> </template> </ChildComponent>
+// Here slotProps is an object containing all the props passed from the child component's slot.
+// We can destructure the slotProps object directly in the template: <template v-slot:default="{ user }"> <p>User Name: {{ user.name }}</p> </template>
+// Renderless Component: A renderless component is a component that does not render any HTML markup of its own. Instead, it provides functionality or data to its child components through scoped slots.
+
+// Provide and Inject:Parent gives (“provides”) a value, Deep children take (“inject”) it
+// Usually, when we need to pass data from the parent to a child component, we use props., but if large component tree?
+// With only props, we would have to pass the same prop across the entire parent chain, This is called "props drilling" and definitely isn't fun to deal with.
+// Prop drilling is when you pass data through multiple layers of components that do not need the data themselves, just to get it to a deeply nested child component that does.
+// Provide and inject is a pair of APIs that allow an ancestor component to provide data or methods that can be injected by all of its descendant components, no matter how deep in the component tree.
+// In ancestor component: provide() { return { themeColor: 'blue', toggleTheme: this.toggleTheme }; }, methods: { toggleTheme() { ... } }
+// For each property in the provide object, the key is used by child components to locate the correct value to inject, while the value is what ends up being injected.
+// In descendant component: inject: ['themeColor', 'toggleTheme']
+// We can provide function/methods, data, objects, reactive state, refs, computed properties etc.
+// We can also provide at the app level: app.provide(/* key */ 'message', /* value */ 'hello!'), This is especially useful when writing plugins.
+// If multiple parents provide data with the same key, inject will resolve to the value from the closest parent in component's parent chain.
+// Injection Aliasing: inject: { localThemeColor: 'themeColor' }, now we can access it via this.localThemeColor. By default it was this.themeColor if we ddint specify local name.
+// If Injected key not found in any parent, it will give runtime error. So, we can use default value: inject: { localThemeColor: { from: 'themeColor', default: 'red' } }
+// In ORDER TO MAKE INJECTIONS REACTIVELY-  provide() {  return {  message: computed(() => this.message)...
+// We can use symbol keys to avoid name collision when providing and injecting values.
+// Take a keys.js with a Symbol() object and import an use. We should use Symbol() key in a team project or large application.
+
+// Async Comp: A component that is loaded only when it is needed.
+// import { defineAsyncComponent } from 'vue'
+// defineAsyncComponent accepts a loader function that returns a Promise with resolve(retrieved component from the server) and reject(component load failed)
+//  components: { AdminPage: defineAsyncComponent(() => import('./AdminPage.vue'))  }
+// We can handle loading, delay and error, timeout state also. Can define loadingComponent and errorComponent.
+// We can specify when to hydrate the component like hydrate on Idle(when the browser is not busy), Hydrate on Visible (only when the component scrolls into view), Hydrate on Media Query, Hydrate on Interaction
+// Hydration makes page faster, more efficient, load js when needed, better core web vitals.
+// Async components can be used with the <Suspense> built-in component. 
