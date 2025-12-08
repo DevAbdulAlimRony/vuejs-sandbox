@@ -1,0 +1,124 @@
+Component Registering:
+1. Global Component: When we register component in main.js.
+2. We can make components available globally in the current Vue application using the .component() method. The
+.component() method can be chained
+3. Import locally where you will use like in App.vue defining components property
+- can define component like component-name or ComponentName
+- can use component in template like <component-name></component-name> or,
+<ComponentName />
+- components{component-name:ComponentName} or, components{ComponentName:ComponentName} or, components{ComponentName} -
+vue detects all as same.
+- If you globally register a component but end up not using it anywhere in your app, it will still be included in the
+final bundle, that is problematic.
+- Global registration makes dependency relationships less explicit in large applications, so local is better.
+- Local registration makes the dependency relationship more explicit, and is more tree-shaking friendly.
+- PascalCase is better for component names.
+
+Scoped Styles:
+1. If we write styling in any component, it affects all other components' template.
+2.
+<style scoped></style> : Scoped affects only that component's template.
+
+Slot:
+- Component have same markup structure and same style, the why duplicating code? use slot
+- We can give name the slot, if one unnamed slot that will be default slot.
+<slot></slot>
+- Now use slot- <template v-slot="slotName"></template> , v-slot:default
+- Vue give us a $slot property
+- Shorthand for v-slot: #
+- scoped slot: passing data from where you use the slot to where you pass the markup for the slot.
+
+Dynamic Component
+- which component to show?
+-
+<component :is="method"></component>
+- keep alive component allows you to not remove the component entirely, but cached
+- keep alive props: :include, :exclude, :max
+- Keep alive lifecycle hook: onActivated(), onDeactivated()
+
+-
+<teleport to="body"></teleport> : Render it in the body element. Useful when we make modal with dialog.
+- multiple teleport can be tragetted to same tag or class or id
+- Teleport can be disabled by :disAbled='functionName'
+
+- suspense for async(experimental)
+
+- $ref attribute
+
+// Lifecycle Hooks
+// Each Vue component instance goes through a series of initialization steps.
+// Vue runs functions called lifecycle hooks, giving users the opportunity to add their own code at specific stages.
+// avoid using arrow functions when declaring lifecycle hooks, as you won't be able to access the component instance via
+this if you do so.
+
+- setup(): Called right after the instance is initialized, before data observation and event/watcher setup. Use
+composition api in options api.
+- beforeCreate(): Called right after the instance has been initialized, before data observation and event/watcher setup.
+- created(): Called after the instance is created. At this stage, the instance has finished processing the options which
+means the following have been set up: data observation, computed properties, methods, watch/event callbacks. However,
+the mounting phase has not been started, and the $el property will not be available yet.
+- beforeMount(): Called right before the mounting begins: the render function is about to be called for the first time.
+- mounted(): Called after the instance has been mounted, where el is replaced by the newly created. mounted hook can be
+used to run code after the component has finished the initial rendering and created the DOM nodes
+- beforeUpdate(): Called when data changes, before the DOM is patched and re-rendered.
+- updated(): Called after a data change causes the virtual DOM to be re-rendered and patched
+- beforeUnmount(): Called right before a component instance is unmounted.
+- unmounted(): Called after a component instance has been unmounted.
+- errorCaptured(): Called when an error from any descendent component is captured.
+- renderTracked(): Called when a reactive dependency is tracked during render.
+- renderTriggered(): Called when a reactive dependency causes a component to re-render.
+- activated(): Called when a kept-alive component is activated.
+- deactivated(): Called when a kept-alive component is deactivated.
+- serverPrefetch(): Called when a component is server-side rendered.
+- For Composition API:
+- onBeforeMount()
+- onMounted()
+- onBeforeUpdate()
+- onUpdated()
+- onBeforeUnmount()
+- onUnmounted()
+- onActivated()
+- onDeactivated()
+- onServerPrefetch()
+- onErrorCaptured()
+- onRenderTracked()
+- onRenderTriggered()
+- We can use both Options API and Composition API lifecycle hooks in the same component.
+
+
+// When a value is passed to a prop attribute, it becomes a property on that component instance.
+// The value of that property is accessible within the template and on the component's this context.
+// Props are reactive, so when the parent component's data changes, the prop value will be updated accordingly.
+// :style="{ fontSize: postFontSize + 'em' }", postFontSize is the data here.
+// Can call event emited by v-on or @
+
+// Dynamically switch between components:
+<component :is="currentTab"></component>
+// the value passed to :is can be either a string (for globally or locally registered components) or a component object.
+// You can also use the is attribute to create regular HTML elements.
+
+// HTML tags and attribute names are case-insensitive, so browsers will interpret any uppercase characters as lowercase.
+// PascalCase component names and camelCased prop names or v-on event names all need to use their kebab-cased
+(hyphen-delimited) equivalents kebab-case in HTML
+<blog-post post-title="hello!" @update-post="onUpdatePost"></blog-post>
+
+// Can use Self closing Tag
+/*<MyComponent />
+
+// Some HTML elements, such as <ul>, <ol>, <table> and <select> have restrictions on what elements can appear inside them, and some elements such as <li>, <tr>, and <option> can only appear inside certain other elements.
+// will be hoisted out as invalid content, causing errors in the eventual rendered output. 
+
+
+// Template Ref: Sometimes we need direct access to the underlying DOM elements.
+- We can use the ref attribute to register a reference to an element or a child component.
+- We can access the element or component using this.$refs inside the component instance.
+- The ref attribute can be used on any element or component in the template.
+- When used on an element, this.$refs will return the corresponding DOM element.
+- ref is a special attribute, similar to the key attribute discussed in the v-for
+- It allows us to obtain a direct reference to a specific DOM element or child component instance after it's mounted.
+//  <input ref="input" />
+//  mounted() { this.$refs.input.focus() }
+// The referenced instance will be identical to the child component's this, which means the parent component will have full access to every property and method of the child component. 
+// The expose option can be used to limit the access to a child instance: expose: ['publicData', 'publicMethod'], now access child comps only those data and method using refs.
+// When ref is used inside v-for, the resulting ref value will be an array 
+// Instead of a string key, the ref attribute can also be bound to a function: input :ref="(el) => { /* assign el to a property or ref */ }">
