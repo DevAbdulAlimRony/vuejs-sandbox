@@ -122,3 +122,26 @@ used to run code after the component has finished the initial rendering and crea
 // The expose option can be used to limit the access to a child instance: expose: ['publicData', 'publicMethod'], now access child comps only those data and method using refs.
 // When ref is used inside v-for, the resulting ref value will be an array 
 // Instead of a string key, the ref attribute can also be bound to a function: input :ref="(el) => { /* assign el to a property or ref */ }">
+
+// Watcher:
+// There are cases where we need to perform "side effects" in reaction to state changes.
+// With the Options API, we can use the watch option to trigger a function whenever a reactive property changes.
+// toChange(newValue, oldValue). Also support dot-delimeted path: 'some.nested.key'(newValue). If one argument passed, its newValue. If two passed, first one is newValue, second one is oldValue.
+// watch is shallow by default: the callback will only trigger when the watched property has been assigned a new value. it won't trigger on nested property changes.
+// Deep Watchers: If you want the callback to fire on all nested mutations, you need to use a deep watcher.
+// toChange: { handler(newValue, oldValue) {}, deep: true}
+// The deep option can also be a number indicating the max traversal depth, how many levels should Vue traverse an object's nested properties.
+// watch is lazy by default, won't be called until the watched source has changed.
+// But sometimes we need eager like fetch some initial data and refetch when state changes.
+// toChange: { handler(newValue){ //Run when comp created and when state changed }, immediate: true }
+// Once Watcher: If you want the callback to trigger only once when the source changes, use the once: true option.
+// Sometimes we do side effects in watcher. id(newId){async fetch(`/api/${newId}`).then(() => {},  what if id changes before the request completes?
+// We can use the onWatcherCleanup() API to register a cleanup function that will be called when the watcher is invalidated and is about to re-run.
+// import { onWatcherCleanup } from 'vue', id(newId){fetch() onWatcherCleanup() () => {} onCleanup(()=> {})}, must be called during the synchronous execution
+// Alternatively, an onCleanup function is also passed to watcher callbacks as the 3rd argument.
+// If you want to access the owner component's DOM in a watcher callback after Vue has updated it, you need to specify the flush: 'post' option. Ex- scroll to that content what changed after rendering new DOM.
+// It's also possible to create a watcher that fires synchronously, flush:sync. Ex. if end date selected less thatn start date, immediately make it selected start date.
+// We can create watcher using this.$watch() also.  created() { this.$watch('question', (newQuestion) => {
+// Watcher stop when component unmount. But in rare case, if you wanna stop it, const unwatch = this.$watch('foo', callback), unwatch(). Ex- unwatched a route query param after fetch data.
+
+
