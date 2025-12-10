@@ -145,3 +145,41 @@ used to run code after the component has finished the initial rendering and crea
 // Watcher stop when component unmount. But in rare case, if you wanna stop it, const unwatch = this.$watch('foo', callback), unwatch(). Ex- unwatched a route query param after fetch data.
 
 
+// Form Input Bindings:
+// <input :value="text" @input="event => text = event.target.value">, Replace it By: <input v-model="text" />
+// Can used on v-select or textarea etc., vue will automatically expands to main DOM.
+// We can use multiple checkboxes of same array v-model. So for Radio Button.
+// For radio, checkbox and select options, the v-model binding values are usually static strings (or booleans for checkbox)
+// But sometimes we need to bind another type- :true-value="dynamicTrueValue", :false-value="dynamicFalseValue", :value="" in checkbox. true value false value only for vue's v-model
+// v-model.lazy modiefier: Synced after "change" instead of "input". Ex- while Updating dependent fields.
+// <input v-model.lazy="searchTerm" placeholder="Search..." />, Now API call fires ONLY when user finishes typing and leaves input.
+// v-model.number: Automatically type cast the user input as number.
+// v-model.trim: whitespace from user input to be trimmed automatically.
+
+
+// Event Handling:
+// v-on:click="handler". shortcut: @click="handler"
+// <button @click="greet">Greet</button>
+// we are able to access the element dispatching the event via event.target
+// We can use inline handling, handling by method, method with argument.
+// Access Event Argument: @click="warn('Form cannot be submitted yet.', $event)
+// using inline arrow function: @click="(event) => warn('Form cannot be submitted yet.', event)"
+// warn(message, event) { if (event) { event.preventDefault()....}}
+// .stop event modifier: the click event's propagation will be stopped. When clicking a child button shouldn’t trigger the parent click event like if click dialog content it wont close.
+// .prevent event modifier: the submit event will no longer reload the page
+// .self event modifier: only trigger handler if event.target is the element itself, not the child. same xmp of dialog.
+// .capture event modifier: an event targeting an inner element is handled, Event captured first on parent, then on children.
+// .once event modifier: the click event will be triggered at most once 
+// .passive event modifier:  the scroll event's default behavior (scrolling) will happen, immediately, instead of waiting for `onScroll` to complete, This lets browser optimize scrolling for smoother performance.
+// Modifiers can be chained: <a @click.stop.prevent="doThat"></a>
+// just the modifier: <form @submit.prevent></form>
+// Key Modifiers: When listening for keyboard events, we often need to check for specific keys.
+// @keyup.enter="submit"
+// You can directly use any valid key names exposed via KeyboardEvent.key: <input @keyup.page-down="onPageDown" />
+// Key aliases: .enter, .tab, .delete (both dlt and backspace key), .esc, .space, .up, .down, .left, .right
+// System modifier keys: .ctrl, .alt, .shift, .meta
+//  Alt + Enter: <input @keyup.alt.enter="clear" />
+// Ctrl/Alt/Shift + Click: @click.ctrl
+// Only Ctrl + click: @click.ctrl.exact
+// @click.exact: work for only click. If you alt + click - wont work. But for normal @click, any key with click will consider as just the click.
+// Mouse Button Modifiers: .left, .right, .middle
