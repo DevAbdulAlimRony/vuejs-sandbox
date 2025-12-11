@@ -183,3 +183,60 @@ used to run code after the component has finished the initial rendering and crea
 // Only Ctrl + click: @click.ctrl.exact
 // @click.exact: work for only click. If you alt + click - wont work. But for normal @click, any key with click will consider as just the click.
 // Mouse Button Modifiers: .left, .right, .middle
+
+// List Rendering:
+// We can use the v-for directive to render a list of items based on an array.
+// <li v-for="item in items">{{ item.message }}</li>
+// items is the source data array and item is an alias for the array element being iterated on
+// v-for also supports an optional second alias for the index of the current item
+// v-for="(item, index) in items"
+// Deconstruction: v-for="{ message } in items", v-for="({ message }, index) in items"
+// Nested: <li v-for="item in items"> <span v-for="childItem in item.children">
+// Can use of delimiter instead of in: <div v-for="item of items"></div>, no difference, just js style syntax.
+// We can also iterate throgh the properties of object using v-for in similar way. can provide key: v-for="(value, key) in myObject"
+// Another for the index: v-for="(value, key, index) in myObject"
+// With a Range or Integer: v-for="n in 10"
+// Can use on Template Tag: <template v-for="item in items">
+// v-for and v-if cant exist together, because v-if has higher priority, and condition will be on item of loop. We can take a template for v-for then call v-if in the list.
+// Use key- v-for="item in items" :key="item.id": To give Vue a hint so that it can track each node's identity, and thus reuse and reorder existing elements
+// It is recommended to provide a key attribute with v-for whenever possible, unless the iterated DOM content is simple .
+// We can use v-for on a custom component, must use key.
+// <MyComponent  v-for="(item, index) in items" :item="item" :index="index" :key="item.id" />
+// Array Mutation Methods(Replace original Array): push(), pop(), shift(), unshift(), splice(), sorft(), reverse().
+// Non mutative, returns a new array: filter(), concat(), slice()
+// If need to show sorted or filtered , use computed: return this.numbers.filter(n => n % 2 === 0)
+// If nested where computed is not feasible, can use method.
+// While using sort and reverse it will mutate the original array, so create copy and return: return [...numbers].reverse()
+// As Js Callback: items.forEach((item, index) => { })
+
+// Conditional Rendering:
+// v-if, v-else-if, v-else.
+// v-show: will always be rendered and remain in the DOM; v-show only toggles the display CSS property of the element.
+// v-show doesn't support the <template> element, nor does it work with v-else.
+// v-if is "real" conditional rendering because it ensures that event listeners and child components inside the conditional block are properly destroyed and re-created during toggles.
+// v-if is also lazy: if the condition is false on initial render, it will not do anything
+// v-if has higher toggle costs while v-show has higher initial render costs.
+// Prefer v-show if you need to toggle something very often, and prefer v-if if the condition is unlikely to change at runtime.
+
+// Class Attribute Binding:
+// We can pass an object to :class.
+// v-bind:class or shortly :class. <div :class="{ active: isActive }"></div>
+// Can use staic class and dynamic class together in an element
+// We can also bind to a computed property that returns an object. This is a common and powerful pattern.
+// classObject() { return { active: this.isActive && !this.error, 'text-danger': this.error }}, <div :class="classObject"></div>
+// Binding to Arrays: :class="[activeClass, errorClass]"
+// <div :class="[isActive ? activeClass : '', errorClass]"></div>
+// We can use object syntax inside the array syntax: :class="[{ [activeClass]: isActive }, errorClass]"
+// If in child component single root element, We can define class in child and parent- they will be merged.
+// If multiple root element, we can define who will recieve the class of parent calling: <p :class="$attrs.class">Hi!</p>
+
+// Style Attribute Binding:
+// Same rules as Class
+// Although camelCase keys are recommended, :style also supports kebab-cased CSS
+// :style="{ 'font-size': fontSize + 'px' }"
+// We can define a styleObject in data and then bind it- its a good idea.
+// We can also take from computed property.
+// We can bind :style to an array of multiple style objects.
+// CSS property that requires a vendor prefix in :style, Vue will automatically add the appropriate prefix.
+// Vue does this by checking at runtime to see which style properties are supported in the current browser.
+// Providing Multiple Values using array: :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }" 
