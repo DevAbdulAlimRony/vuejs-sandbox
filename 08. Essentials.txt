@@ -240,3 +240,55 @@ used to run code after the component has finished the initial rendering and crea
 // CSS property that requires a vendor prefix in :style, Vue will automatically add the appropriate prefix.
 // Vue does this by checking at runtime to see which style properties are supported in the current browser.
 // Providing Multiple Values using array: :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }" 
+
+// Computed Property:
+// Instead of a computed property, we can define the same function as a method. But,
+// The difference is that computed properties are cached based on their reactive dependencies.
+// A computed property will only re-evaluate when some of its reactive dependencies have changed. 
+// In comparison, a method invocation will always run the function whenever a re-render happens.
+// Why Caching need Exp: Imagine we have an expensive computed property list, which requires looping through a huge array and doing a lot of computations.
+// Computed properties are by default getter-only, can't set new value- will get runtime error.
+// But if wanna set a new value: computed: { fullName: { get() {...} , set(newValue) {...}}}
+// Ex of setter and getter can be needed: currency formatting, Date picker, Unit Conversion etc.
+// Getting previous Value: 
+alwaysSmall(_, previous) {
+      if (this.count <= 3) {
+        return this.count
+      }
+
+      return previous
+} // or,  get(_, previous) {}, set(newValue){}
+
+// Don't mutate other state, make async requests, or mutate the DOM inside a computed getter.
+// A computed return value should be treated as read-only and never be mutated - instead, update the source state it depends on to trigger new computations.
+
+// Data: Reactive state
+// use null, undefined or some other placeholder value for properties where the desired value isn't yet available.
+// mounted() { const newObject = {}; this.someObject = newObject}
+// When you access this.someObject after assigning it, the value is a reactive proxy of the original newObject.
+// state is deeply reactive by default., even when you mutate nested objects or arrays.
+// When you mutate reactive state, the DOM is updated automatically. But,
+// To wait for the DOM update to complete after a state change, you can use the nextTick() global API
+// import { nextTick } from 'vue'......this.count++; await nextTick()
+// Stateful Methods: Exp When we use debouncing - this.debouncedClick = _.debounce(this.click, 500), this.debouncedClick.cancel()
+
+// Text Interpolation-  "Mustache" syntax : <span>Message: {{ msg }}</span>
+// Raw HTML: <span v-html="rawHtml", v-html is a directive here.
+// Directives are prefixed with v- to indicate that they are special attributes provided by Vue
+// Attribute Binding- v-bind:id or :id etc.
+// The v-bind directive instructs Vue to keep the element's id attribute in sync with the component's dynamicId property. 
+// If the attribute has the same name as the variable name of the JavaScript value being bound, the syntax can be further shortened to omit the attribute value:
+// <div :id></div> -<!-- same as :id="id" -->
+// Vue actually supports the full power of JavaScript expressions inside all data bindings
+// <div :id="`list-${id}`"></div>
+// Each binding can only contain one single expression.
+// {{ var a = 1 }}: This is a statement, not an expression. So wont work.
+// possible to call a component-exposed method inside a binding expression
+// Can explicitly define additional globals for all Vue expressions by adding them to app.config.globalProperties.
+// Directives: v-on, v-slot, v-if, v-on etc
+// Directive with Arguments: denoted by a colon after the directive name
+// <a v-bind:href="url"> ... </a> or, <a :href="url"> ... </a> here href is the argument.
+// v-on:click or @click
+// Dynamic Argument: <a v-bind:[attributeName]="url"> ... </a> or :[attributeName]="url"
+// v-on:[eventName]="doSomething" or @[eventName]
+// If you need to pass a complex dynamic argument, it's probably better to use a computed property
