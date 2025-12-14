@@ -1,6 +1,6 @@
 //Composition API is the alternative way of options api. We might face two problems when building bigger apps-
-    //1. Code that belongs together logically is split up across multiple options(data, methods, computed)
-    //2. Re-using logic across components can be tricky.
+//1. Code that belongs together logically is split up across multiple options(data, methods, computed)
+//2. Re-using logic across components can be tricky.
 //You can absolutely mix the composition and options api
 
 export default {
@@ -11,7 +11,7 @@ export default {
     // import { watch } from 'vue';
     // import { provide, inject } from 'vue';
     // import { onBeforeMount, onMounted, onBeforeUpdate, onUpdated,  onBeforeUnmount, onUnmounted} from 'vue';
-    setup(){
+    setup() {
 
         //getting props- setup(props). props.fName
         //setup(props, context). context has fallback attr, emit and slot
@@ -23,8 +23,8 @@ export default {
 
         const userName = ref('Abdul');
         const fName = ref('');
-         // userName.value. Output: Abdul
-          // userName. Output: {value: Abdul}
+        // userName.value. Output: Abdul
+        // userName. Output: {value: Abdul}
 
         const user = ref({
             name: 'Abdul',
@@ -46,16 +46,16 @@ export default {
 
 
         //Replacing Methods property
-        function setNewData(){
-            user.age =10;
+        function setNewData() {
+            user.age = 10;
         }
 
-        function fName(event){
+        function fName(event) {
             fName.value = event.target.value;
         }
 
         //Replacing computed property by computed method
-        const com = computed(function() {
+        const com = computed(function () {
             return fName.value + 'hi';
             //Computed properties are by default getter-only. If you attempt to assign a new value to a computed property, you will receive a runtime warning. In the rare cases where you need a "writable" computed property, you can create one by providing both a getter and a setter
             //Writable Computed: using getter and setter: get(), set(newValue)
@@ -64,8 +64,8 @@ export default {
         //getting input data from ref template: input.value.value
 
         //Replacing Watch options from options api to composition api
-        watch(fName, function(newValue, oldValue) {});
-        watch([fName, ], function(newValues, oldValues) {
+        watch(fName, function (newValue, oldValue) { });
+        watch([fName,], function (newValues, oldValues) {
             // oldValues[0]
         });
 
@@ -88,7 +88,7 @@ export default {
         //beforeMount, mounted: onBeforeMount, onMounted
         // beforeUpdate, updated: onBeforeUpdate, beforeUpdated
         //beforeUnmount, unmounted: on...
-        onBeforeMount(function() {});
+        onBeforeMount(function () { });
     }
 }
 
@@ -97,7 +97,28 @@ export default {
 //Use the <script setup> syntax for simpler components with straightforward logic, especially if you prefer a more concise and readable code style.
 
 //In component
-{{ userName }}
-{{ user.age }}
+{ { userName } }
+{ { user.age } }
 //v-model='fName'
 
+
+// Declaring Reactive State  or Data
+import { ref } from 'vue'
+const count = ref(0)
+console.log(count) // { value: 0 }
+console.log(count.value)
+count.value++
+// To access in Template, declare and return data in setup() function, then we can use count in template, not count.value
+// setup(){
+//     const count = ref(0)
+//     return { count }
+// }
+// Or, we can use <script setup>, then no need to return, just call the ref
+// In js, always need .value(), In template dont need if in setup() function or in setup script.
+// Behind the scene .value is a tracket getter and setter to access the mutated value.
+// ref can be nested, deep reactivity will happen automatically.
+// Shallow refs can be used for optimizing performance by avoiding the observation cost of large objects
+// Can use await nextTick() as we do in options api.
+// We can define data using reactive() or shallowReactive() state also.
+// the returned value from reactive() is a Proxy of the original object, which is not equal to the original object
+// reactive() has many limitations like limited value types- one for array, object, Map, Set; cannot replace entire object; not destructure friendly
