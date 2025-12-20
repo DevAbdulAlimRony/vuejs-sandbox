@@ -122,3 +122,10 @@ count.value++
 // We can define data using reactive() or shallowReactive() state also.
 // the returned value from reactive() is a Proxy of the original object, which is not equal to the original object
 // reactive() has many limitations like limited value types- one for array, object, Map, Set; cannot replace entire object; not destructure friendly
+
+
+// Computed:
+// import {computed} from 'vue'
+// const publishedBooksMessage = computed(() => { return ...}
+// Other concepts of computed same as options api
+
