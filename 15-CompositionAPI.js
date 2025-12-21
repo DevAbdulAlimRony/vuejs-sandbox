@@ -129,3 +129,24 @@ count.value++
 // const publishedBooksMessage = computed(() => { return ...}
 // Other concepts of computed same as options api
 
+// Event Handling:
+// Method Handler- function greet(event){}
+
+// Watchers:
+// import { watch } from 'vue'
+// watch(question, async (newQuestion, oldQuestion) => {})
+// watch(x, (newX) => {})
+// watch(()=>)
+// watch([x, () => y.value], ([newX, newY]) => {
+// If reactive object const obj = reactive({ count: 0 }), use a getter- watch( () => obj.count, (count) => {})
+// Other concepts like deep, immediate are same as options api.
+
+
+// Template Ref:
+// import { useTemplateRef } from 'vue'
+// const input = useTemplateRef('my-input'), now use that input.value or input
+
+// Lifecycle Hooks:
+// import { onMounted } from 'vue'
+// onMounted(() => { }
+// setTimeout(() => { onMounted(() => {......
