@@ -51,3 +51,51 @@
 ✅ zj) To improve performance, we need to first know how to measure it. Ex- PageSpeed Insights, Webpage Test, Vue Dev Tools Extension in Localhost
 ✅ zi) app.config.performance enables Vue-specific performance markers in Chrome DevTools' performance timeline. It shows how much of each JS/CSS file is actually used on that page.
 ✅ zj) You can track your Laravel+Vue bundle size (per chunk / per “page”) and get clear hints on what to optimize using visualizer also
+
+
+Extra:
+0. Check All mixins and ap.js If Need Actually in Entire Project, make common importer for common.....make all components scalable, check all components, remove unonecessary data, componets..
+1.  Frontend Component Always Think for Scalable Way
+3. Use Composition API
+4. defineAsyncComponent in Route and in App or in page (when load observe)- only for large component- its called lazy load- only when it passes the v-if or is mounted via router. So use in router and only for condition...but if no condition use, no problem here..
+5. Clean Dead Code
+6. Make sure your package.json includes “sideEffects: false” unless you have CSS imports.
+7. Dynamic Image with picture, image performance all apply, only load image when page scroll
+8. The new FontFaceObserver integration with Vue’s composition API lets you trigger rendering phases based on font availability, preventing the dreaded layout shifts that frustrate users and hurt your performance scores.
+9. Tools like UnoCSS and modern Tailwind integrations produce drastically smaller CSS bundles by eliminating unused styles automatically during build time.
+10. Vue’s scoped CSS got supercharged with the new :deep() and :slotted() selectors, giving you granular control without performance penalties.
+11. Efficient API Data Caching, Combine this with the Storage API and its expanded quota limits to persist critical API responses. Smart expiration policies based on data volatility rather than arbitrary timeframes ensure users always see fresh content while minimizing unnecessary network requests, creating that instant feel even on complex dashboards.
+12. Implementing Service Workers for Offline Capabilities, The new Background Sync and Periodic Sync APIs let Vue apps queue updates when offline and synchronize when connectivity returns. cache-first for assets, and network-first for critical user interactions.
+13. using pinia
+14. on-demand state loading patterns
+15. collecting multiple mutations into single transaction-like operations reduces unnecessary re-renders by up to 60% in complex UIs.
+16. By implementing debouncing strategies and computed getters with proper caching, you prevent cascade re-renders. Many teams now use Pinia’s onAction middleware to automatically batch related state changes, saving precious rendering cycles.
+17. should flatten your state into map-like structures with references. This database-inspired technique can improve mutation performance by 40-65%, particularly in applications with interconnected data.
+18. prioritize using computed properties over methods for expensive calculations, as computed properties are cached and only re-evaluated when their dependencies change.
+19. Vapor Mode for Maximum Speed, Server Components and Islands Architecture, Micro-Frontends with Vue.js
+20. Use vuetify's treeshaking
+21. mport only used icons  of vuetify, vuetify import all material design icon
+22. import { mdiClose } from '@mdi/js';
+
+export default new Vuetify({
+  icons: {
+       close: mdiClose,
+	   ...
+	}
+});
+
+// In component template
+<template>
+	<v-icon> {{ $vuetify.icons.values.close }}</v-icon>
+</template>
+If any icon not used in overall app, just import in page
+23. Get rid of moment.js locales
+24. Add gzip and cache headers 
+25. Resize big .
+26. Replace huge modules, also modules or packages which are not treeshaking (like vue-charts which not have tree shaking, use uplot instrad)
+27. Optimise CSS using cssnano 
+28. Optimise CSS with purgeCSS
+29. Blacklist used chunks from being prefetched 
+30. when use vuetify, dont need bootstrap
+32. Use LightBox
+
