@@ -150,3 +150,37 @@ count.value++
 // import { onMounted } from 'vue'
 // onMounted(() => { }
 // setTimeout(() => { onMounted(() => {......
+
+// Component Global Registartion- .component()
+// Local Registration- Just import, no need registartion.
+
+// Props:
+// const props = defineProps(['foo']), access: props.foo
+// defineProps({ title: String,  likes: Number}). Aceess in Component: {{title}}
+// Destructure: const { foo } = defineProps(['foo']), Now access just by foo.
+
+// Events Emitting:
+// Same as Options api in template
+// Declaring: defineEmits(['inFocus', 'submit'])
+// const emit = defineEmits(['inFocus', 'submit']), Access: emit('submit')
+// Event Validation same  defineEmits({ ...do everything here }
+
+// V-model:
+// const model = defineModel(). Acess: model.value or model.
+// const model = defineModel({ required: true })
+// const model = defineModel({ default: 0 })
+// const firstName = defineModel('firstName'). Calling Comp: <UserName v-model:first-name="first"
+
+// Falthrough Attributes: Same concept as options api
+// defineOptions({inheritAttrs: false})
+// Accessing Fallthroght Attr in JS: import { useAttrs } from 'vue', const attrs = useAttrs()
+
+// Provide Inject:
+// import { provide } from 'vue', provide( 'message',  'hello!')
+// In app level, no need to import, just use .provide()
+// import { inject } from 'vue', const message = inject('message')
+
+// Define Async:
+// import { defineAsyncComponent } from 'vue'
+// const AsyncComp = defineAsyncComponent(() => import...
+// app.component('MyComponent', defineAsyncComponent(() =>
