@@ -184,3 +184,10 @@ count.value++
 // import { defineAsyncComponent } from 'vue'
 // const AsyncComp = defineAsyncComponent(() => import...
 // app.component('MyComponent', defineAsyncComponent(() =>
+
+// Custom Directive:
+// const vHighlight = {   mounted: (el) => {  el.classList.add('is-highlight')...
+
+
+// We can use typescript both for options api and composition api.
+// See Vue's official Documenation to use Typescript.
