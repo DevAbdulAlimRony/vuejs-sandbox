@@ -138,3 +138,23 @@ routes4: [
 // const routes = [{ path: '/', component: Homepage, alias: '/home' }]
 // { path: '', component: UserList, alias: ['/people', 'list'] }: Render lists for /users, /users/list, /people
 // { path: 'profile', component: UserDetails, alias: ['/:id', ''] }:  /users/24, /users/24/profile, /24
+
+// $route.params.id This makes tight coupling, can use props binding.
+// { path: '/user/:id', component: User, props: true }: id the props of the component
+// When props is set to true, the route.params will be set as the component props
+// { path: '/user/:id', components: { default: User, sidebar: Sidebar }, props: { default: true, sidebar: false }}
+// props: { newsletterPopup: false }: If props is object, it will be set as the component props, useful when props are static.
+// props: route => ({ query: route.query.q })
+// <RouterView v-slot="{ Component }"> <component  :is="Component"  view-prop="value"/>...
+
+
+// The RouterLink component adds two CSS classes to active links, router-link-active and router-link-exact-active.
+// An exact match does not include ancestor routes. Like /user and /user/id both will be active.
+// <RouterLink activeClass="" exactActiveClass="" />
+// Default class can be overriden when create instance of the router: const router = createRouter({   linkActiveClass: 'border-indigo-500',...
+
+// History Modes:
+// HTML5 history mode: history: createWebHistory():
+// Has History Mode:  history: createWebHashHistory()- It uses a hash character (#) before the actual URL that is internally passed.
+// Memory Mode:  doesn't interact with the URL nor automatically triggers the initial navigation.
+// For memory mode, there will be no history, meaning you won't be able to go back or forward.
