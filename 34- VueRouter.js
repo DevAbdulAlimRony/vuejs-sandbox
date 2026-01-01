@@ -158,3 +158,169 @@ routes4: [
 // Has History Mode:  history: createWebHashHistory()- It uses a hash character (#) before the actual URL that is internally passed.
 // Memory Mode:  doesn't interact with the URL nor automatically triggers the initial navigation.
 // For memory mode, there will be no history, meaning you won't be able to go back or forward.
+
+// Navigation Guards: Like a Middleware to redirect or cancel the route.
+// Global Before Guard- for each route:
+router.beforeEach((to, from, next) => {
+    // to is target route location
+    // from is the currect route location
+    // can be async (to, from) if we have any asynchronous method inside.
+    // next is the optional third argument
+    // optional return false: cancel the current navigation.
+    if (
+        !isAuthenticated &&
+        to.name !== 'Login'
+    ) {
+        return { name: 'Login' }
+    }
+
+    // Or,
+    if (to.name !== 'Login' && !isAuthenticated) next({ name: 'Login' })
+    else next()
+})
+
+// beforeResolve: same as beforeEach, will work for every navigation. But
+// Resolve guards are called right before the navigation is confirmed, after all in-component guards and async route components are resolved.
+router.beforeResolve(async to => { })
+
+// Also global afterEach(): useful for analytics, changing the title of the page, accessibility features like announcing the page and many other things.
+// We can use inject inside them , useful for injecting global properties from store like vuex or pinia or from app.js.
+
+// Defiing beforeEnter guards directly on route's configuration object.
+function removeQueryParams(to) {
+    if (Object.keys(to.query).length)
+        return { path: to.path, query: {}, hash: to.hash }
+}
+
+function removeHash(to) {
+    if (to.hash) return { path: to.path, query: to.query, hash: '' }
+}
+const routes5 = [
+    {
+        path: '/users/:id',
+        component: UserDetails,
+        beforeEnter: (to, from) => {
+            // reject the navigation
+            return false
+            // or, call array of functions
+            //  beforeEnter: [removeQueryParams, removeHash],
+        },
+    },
+];
+// beforeEnter guards only trigger when entering the route, they don't trigger when the params, query or hash change e.g. going from /users/2 to /users/3 or going from /users/2#info to /users/2#projects.
+// When working with nested routes, both parent and child routes can use beforeEnter.
+// When placed on a parent route, it won't be triggered when moving between children with that same parent.
+
+// In Component Guards: We can call these in the components' export default:
+// beforeRouteEnter(to, from) { }: called before the route that renders this component is confirmed.
+// beforeRouteUpdate(to, from) {}:  component has changed, but this component is reused in the new route.
+// beforeRouteLeave(to, from) {}: called when the route that renders this component is about to be navigated away from.
+// The beforeRouteEnter guard does NOT have access to this, because the guard is called before the navigation is confirmed
+// beforeRouteEnter is the only guard that supports passing a callback to next.
+// onBeforeRouteUpdate and onBeforeRouteLeave for composition API
+
+// Route Meta Fields:
+const routes6 = [
+    {
+        path: '/posts',
+        meta: { requiresAuth: true }
+    },
+]
+// router.beforeEach((to, from) => { to.matched.some(record => record.meta.requiresAuth) or if (to.meta.requiresAuth && !auth.isLoggedIn()) {...
+
+// Data Fetching: Sometimes you need to fetch data from the server when a route is activated.
+// For example, before rendering a user profile, you need to fetch the user's data from the server.
+// We have two options: fetching after navigation, fetching before navigation
+watch(() => route.params.id, fetchData, { immediate: true }) // After
+// If want to fetch before, use beforeRouteEnter.
+
+// The RouterView component exposes a slot that can be used to render the route component
+// <router-view v-slot="{ Component }">  <component :is="Component" />...
+// Usage Case: We can wrap <component> inside keep-alive. So rather than router-view itself, we are keep aliving the route component only.
+// Also for Transition
+//     <router-view v-slot="{ Component }" >
+//         <transition>
+//             <keep-alive>
+//                 <component :is="Component" />
+//             </keep-alive>
+//         </transition>
+// </router-view >
+// We can also pass any prop using that component.
+// Also can use template ref on that compoent.
+
+// WE can use transition in router-view. or into routes meta.
+// It is also possible to determine the transition to use dynamically based on the relationship between the target route and current route.
+// <router-view v-slot="{ Component, route }"><transition :name="route.meta.transition"><component :is="Component" />...
+// or in afterEach:  to.meta.transition = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+//  <component :is="Component" :key="route.path" />: Force transition between reused views using the key.
+
+// Scroll Behaviour:
+// we may want to scroll to top when navigating to a new route, or preserve the scrolling position of history entries just like real page reload does.
+const router7 = createRouter({
+    scrollBehavior(to, from, savedPosition) {
+        // return desired position
+        return { top: 0 }
+        return {
+            el: '#main',
+            top: 10,
+        }
+        if (savedPosition) {
+            return savedPosition
+        }
+        if (to.hash) {
+            return {
+                el: to.hash,
+                behavior: 'smooth',
+            }
+        }
+        // Sometimes we need to wait a bit before scrolling in the page. Use promise and setTimeOut.
+        // Custom like marginTop etc.
+    }
+})
+
+// Lazy Routes
+const UserDetails = () => import('./views/UserDetails.vue')
+const router8 = createRouter({
+    routes: [
+        { path: '/users/:id', component: UserDetails },
+        { path: '/users/:id', component: () => import('./views/UserDetails.vue') },
+    ],
+})
+
+// Grouping Components in the Same Chunk: (If different comp has same route)
+// Define Chunks in Vite under rollupOPtions -> output -> manualChunks
+
+// Extending RouterLink:
+// import { RouterLink } from 'vue-router'
+// export default {
+//     props: {
+//         ...RouterLink.props,
+//         inactiveClass: String,
+//     },
+//     computed: {
+//         isExternalLink() {
+//             return typeof this.to === 'string' && this.to.startsWith('http')
+//         },
+
+// Navigation using push: await router.push('/my-profile')
+// Navigation Failures:
+import { NavigationFailureType, isNavigationFailure } from 'vue-router'
+const failure = await router.push('/articles/2')
+if (isNavigationFailure(failure, NavigationFailureType.aborted)) {
+    showToast('You have unsaved changes, discard and leave anyway?')
+}
+
+// Checking Global Failure:
+router.afterEach((to, from, failure) => {
+    if (failure) {
+        sendToAnalytics(to, from, failure)
+    }
+})
+// if (router.push('/my-profile').currentRoute.value.redirectedFrom)
+
+// in some situations, you might want to add or remove routes while the application is already running. 
+router.addRoute({ path: '/about', component: About })
+router.replace(router.currentRoute.value.fullPath)
+
+removeRoute() // This is useful when the routes do not have a name
+router.removeRoute('about') // When route has a name
