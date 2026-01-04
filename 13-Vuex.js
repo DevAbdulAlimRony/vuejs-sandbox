@@ -152,3 +152,149 @@ console.log(store.state.count)
 // In Js:
 this.$store.commit('increment')
 console.log(this.$store.state.count)
+
+// State: Vuex uses a single state tree - that is, this single object contains all your application level state and serves as the "single source of truth."
+// Usually you will have only one store for each application.
+// The data you store in Vuex follows the same rules as the data in a Vue instance
+// Vuex "injects" the store into all child components from the root component through Vue's plugin system, and will be available on them as this.$store.
+// Accessing state in any component in computed property: computed: { count () {   return this.$store.state.count } }
+// Whenever store.state.count changes, it will cause the computed property to re-evaluate, and trigger associated DOM updates.
+// When a component needs to make use of multiple store state properties or getters, declaring all these computed properties can get repetitive and verbose.
+// We can use mapState helper which generates computed getter functions for us.
+computed: mapState({
+    // arrow functions can make the code very succinct!
+    count: state => state.count,
+
+    // passing the string value 'count' is same as `state => state.count`
+    countAlias: 'count',
+
+    // to access local state with `this`, a normal function must be used
+    countPlusLocalState(state) {
+        return state.count + this.localCount
+    },
+
+    // when the name of a mapped computed property is the same as a state sub tree name
+    count,
+})
+
+// Local computed and mapSate with spread operator
+// computed: {
+//     localComputed() { },
+//      ...mapState({})
+// }
+
+// Getters: Sometimes we may need to compute derived state based on store state.
+// computed: {
+//     doneTodosCount() {
+//         return this.$store.state.todos.filter(todo => todo.done).length
+//     }
+// }
+// If more than one component needs to make use of this, we have to either duplicate the function, or extract it into a shared helper and import it in multiple places - both are less than ideal.
+// Vuex allows us to define "getters" in the store to solve this problem.
+// Getters will receive the state as their 1st argument
+const store3 = createStore({
+    state: {
+        todos: [
+            { id: 1, text: '...', done: true },
+            { id: 2, text: '...', done: false }
+        ]
+    },
+    getters: {
+        doneTodos(state) {
+            return state.todos.filter(todo => todo.done)
+        },
+
+        // Getters will also receive other getters as the 2nd argument
+        doneTodosCount(state, getters) {
+            return getters.doneTodos.length
+        },
+
+        // Pass arguments to getters by returning a function.
+        // Useful when you want to query an array in the store.
+        getTodoById: (state) => (id) => {
+            return state.todos.find(todo => todo.id === id)
+        }
+    }
+})
+// Access it: store.getters.doneTodos. or return it from a normal computed.
+// as like as mapState, we have mapGetters helper to generate computed getter functions for us.
+// computed: {
+//     ...mapGetters([
+//     'doneCount: 'doneTodosCount'
+//     'anotherGetter',
+//     // ...
+// ])
+
+// Mutations:
+// The only way to actually change state in a Vuex store is by committing a mutation.
+// Vuex mutations are very similar to events: each mutation has a string type and a handler.
+const store4 = createStore({
+    state() {
+        return {
+            count: 0
+        }
+    },
+    mutations: {
+        increment(state) {
+            state.count++
+        },
+
+        // You can pass an additional argument to store.commit, which is called the payload for the mutation
+        increment2(state, n) {
+            state.count += n
+        },
+
+        // In most cases, the payload should be an object so that it can contain multiple fields
+        increment3(state, payload) {
+            state.count += payload.amount
+        } // Accessing: store.commit('increment3', { amount: 10 });
+
+        // We can use constants for mutation.
+        // Let's say we have common farmerTypeConstants.js which will be used in so many components- export const SOME_MUTATION = 'SOME_MUTATION'
+        // Import that cointstant.js import { SOME_MUTATION } from './mutation-types', then,
+        // [SOME_MUTATION](state) { }
+
+        // Mutation handler functions must be synchronous. 
+    }
+})
+// An alternative way to commit a mutation is by directly using an object that has a type property
+store.commit({ type: 'increment', amount: 10 })
+// We also have mapMutations helper to generate methods that dispatch mutations for us.
+// methods: {
+//     ...mapMutations([
+//         'increment', // map this.increment() to this.$store.commit('increment')
+//         'decrement'
+// ]),
+
+// Actoions:
+// Actions are similar to mutations, the differences being that:
+// Instead of mutating the state, actions commit mutations. 
+const store7 = createStore({
+    state: {
+        count: 0
+    },
+    mutations: {
+        increment(state) {
+            state.count++
+        }
+    },
+    actions: {
+        increment(context) {
+            context.commit('increment')
+        }
+    }
+})
+
+// We can call context.commit to commit a mutation, or access the state and getters via context.state and context.getters.
+// We can even call other actions with context.dispatch.
+// can use  argument destructuring to simplify the code a bit (especially when we need to call commit multiple times):
+//  increment ({ commit }) {  commit('increment') }
+
+// Accessing Action: store.dispatch('increment') or by mapActions()
+// We can perform asynchronous operations inside an action
+// Actions support the same payload format and object-style dispatch: store.dispatch('incrementAsync', { amount: 10 }), store.dispatch({ type: 'incrementAsync', amount: 10 })
+// Practical Example: Checkout a Shopping Cart.
+//  actionA ({ commit }) {return new Promise((resolve, reject) => {}, store.dispatch('actionA').then(() => {}
+// actionB ({ dispatch, commit }) {    return dispatch('actionA').then(() => {  commit('someOtherMutation')
+// commit('gotData', await getData())
+//  async actionB ({ dispatch, commit }) { await dispatch('actionA') commit('gotOtherData', await getOtherData())
