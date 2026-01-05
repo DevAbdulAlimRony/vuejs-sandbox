@@ -298,3 +298,80 @@ const store7 = createStore({
 // actionB ({ dispatch, commit }) {    return dispatch('actionA').then(() => {  commit('someOtherMutation')
 // commit('gotData', await getData())
 //  async actionB ({ dispatch, commit }) { await dispatch('actionA') commit('gotOtherData', await getOtherData())
+
+// Modules: In large applications, the store can get really big, and managing it in a single file can be difficult.
+// Vuex allows us to divide our store into modules. Each module can contain its own state, mutations, actions, getters, and even nested modules.
+// const moduleA = {
+//     state: () => ({ ... }),
+//     mutations: { ... },
+//     actions: { ... },
+//     getters: { ... }
+// }
+// const moduleB = {
+//     state: () => ({ ... }),
+//     mutations: { ... },
+//     actions: { ... }
+// }
+const store8 = createStore({
+    modules: {
+        a: moduleA,
+        b: moduleB
+    }
+})
+// Access: store.state.a // -> `moduleA`'s state
+// For local module root state will be exposed as context.rootState
+// Inside module getters, the root state will be exposed as their 3rd argument.
+// If you want your modules to be more self-contained or reusable, you can mark it as namespaced with namespaced: true.
+// When the module is registered, all of its getters, actions and mutations will be automatically namespaced based on the path the module is registered at.
+// If you want to use global state and getters, rootState and rootGetters are passed as the 3rd and 4th arguments to getter functions, and also exposed as properties on the context object passed to action functions.
+// To dispatch actions or commit mutations in the global namespace, pass { root: true } as the 3rd argument to dispatch and commit.
+// If you want to register global actions in namespaced modules, you can mark it with root: true and place the action definition to function handler
+// computed: {
+//   ...mapState('some/nested/module', {
+//     a: state => state.a,
+//     b: state => state.b
+// }),
+//   ...mapGetters('some/nested/module', [
+//     'someGetter', // -> this.someGetter
+//     'someOtherGetter', // -> this.someOtherGetter
+// ])
+// },
+// methods: {
+//   ...mapActions('some/nested/module', [
+//     'foo', // -> this.foo()
+//     'bar' // -> this.bar()
+// ])
+// }
+
+// or can use namespaced helper: const { mapState, mapActions } = createNamespacedHelpers('some/nested/module')
+// You can register a module after the store has been created with the store.registerModule method.
+
+// Follow Three rules:
+// 1. Application-level state is centralized in the store.
+// 2. The only way to change state is by committing mutations.
+// 3. To handle asynchronous operations, use actions
+
+// For composition api:
+// To access the store within the setup hook, you can call the useStore function. Then - count: computed(() => store.state.count); double: computed(() => store.getters.double);  increment: () => store.commit('increment'), asyncIncrement: () => store.dispatch('asyncIncrement')
+
+// Vuex stores accept the plugins option that exposes hooks for each mutation.
+// plugins: [myPlugin]. in myPlugin.js: const myPlugin = (store) => { store.subscribe((mutation, state) => { // called after every mutation. The mutation comes in the format of { type, payload } console.log(mutation.type) console.log(mutation.payload) }) }
+// Can commit mutations inside plugins.
+// Vuex comes with a built in logger plugin for common debugging usage
+import { createLogger } from 'vuex'
+
+const store9 = createStore({
+    plugins: [createLogger()] // Now impmplement the createLogger with defined functionalities.
+})
+
+// To enable strict mode, simply pass in strict: true when creating a Vuex store
+// In strict mode, whenever Vuex state is mutated outside of mutation handlers, an error will be thrown.
+// Do not enable strict mode when deploying for production, its only for debugging.
+
+// Form Handling in strict mode
+// Testing
+// Typescript Support
+
+// Vuex supports hot-reloading mutations, modules, actions and getters during development, using webpack's Hot Module Replacement API.
+// Hot reloading is
+// Hot reloading a developer feature that injects code changes directly into a running application, allowing you to see updates instantly without a full restart, preserving the app's state
