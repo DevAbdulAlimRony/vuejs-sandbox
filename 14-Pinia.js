@@ -29,3 +29,22 @@ export const useCounterStore = defineStore('counter', {
         },
     },
 })
+
+// Defining a store:
+// Give a unique name for the store: export const useAlertsStore
+// This name, also referred to as id, is necessary and is used by Pinia to connect the store to the devtools.
+// defineStore() accepts two distinct values for its second argument: a Setup function or an Options object.
+// Options object are state,m actions and getters properties.
+// You can think of state as the data of the store, getters as the computed properties of the store, and actions as the methods.
+// Rather than state, getetrs - we can pass reactive properties what we normally do in setup like const count = ref(0); function increment() and finally must return all state computed and methods: return { count, name, doubleCount, increment }
+// ref()s become state properties, computed()s become getters, function()s become actions.
+// We can use global thing like inject, useRoute() in setup store.
+// Options stores are easier to work with while Setup stores are more flexible and powerful.
+// If app.use(pinia) not called for store, we can import the store in local component:
+import { useCounterStore } from '@/stores/counter'
+const store = useCounterStore()
+// If you are not using setup components yet, you can still use Pinia with map helpers.
+// You can define as many stores as you want and you should define each store in a different file to get the most out of Pinia.
+// We can deconstruct the store, then states will be local component's ref.  This is useful when you are only using state from the store but not calling any action.
+
+// State:
