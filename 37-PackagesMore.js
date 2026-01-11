@@ -9,3 +9,7 @@
 // vue-countup-v3
 // vue-easy-lightbox
 // vue3-editor
+
+// Frameworks:
+// Nuxt
+// Quasar
