@@ -97,4 +97,41 @@ export default defineConfig({
 });
 
 // Vite caches the pre-bundled dependencies in node_modules/.vite
-// Resolved dependency requests are strongly cached with HTTP headers max-age=31536000,immutable to improve page reload performance during dev. 
+// Resolved dependency requests are strongly cached with HTTP headers max-age=31536000,immutable to improve page reload performance during dev.
+
+// Vite emits vite:preloadError event when it fails to load dynamic imports.
+// Enable rollup watcher with vite build --watch, or use build: {watch: {}} options in defineConfig({})
+
+//* ENV Variables:
+// Vite exposes certain constants under the special import.meta.env object.
+// import.meta.env.MODE
+// import.meta.env.BASE_URL, .PROD, .DEV, .SSR
+// import.meta.enc.CUTOM_KEY
+// Now Access in HTML: <h2>Using data from %VITE_API_URL%</h2>
+// vite build --mode development
+
+//* Server Side Rendering:
+// The index.html will need to reference entry-client.js and include a placeholder where the server-rendered markup should be injected
+// Maybe we can check logic if SSR enabled then import the entry-client in index.html: if (import.meta.env.SSR) {
+// To ship an SSR project for production: in json scripts:  "build:client": "vite build --outDir dist/client", "build:server": "vite build --outDir dist/server --ssr src/entry-server.js"
+// SSG: If the routes and the data needed for certain routes are known ahead of time, we can pre-render these routes into static HTML using the same logic as production SSR.
+// For vue reat type plugin, To support conditional transforms, Vite passes an additional ssr property in the options object of the following plugin hooks: resolveId, load, transform.
+
+//* Backend Integration:
+// export default defineConfig({
+//     server: {
+//         cors: {
+// the origin you will be accessing via browser
+//             origin: 'http://my-backend.example.com',
+//         },
+//     },
+//     build: {
+//         generate .vite/manifest.json in outDir
+//         manifest: true,
+//         rollupOptions: {
+//  overwrite default .html entry
+//             input: '/path/to/main.js',
+//         },
+//     },
+// })
+// Import app.js below in your main entry point like index.html.
